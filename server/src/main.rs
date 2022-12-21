@@ -1,5 +1,3 @@
-use std::env::args;
-
 use warp::Filter;
 use tokio::process::Command;
 
@@ -25,8 +23,9 @@ async fn bulid() {
     let cmd = cmd
         .current_dir("app")
         .arg("build")
+        .arg("--release")
         .arg("--target")
         .arg("web");
-
+    dbg!(&cmd);
     let mut child = cmd.spawn().expect("failed to spawn command");
 }
