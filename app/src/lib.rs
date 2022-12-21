@@ -1,9 +1,8 @@
 mod app;
+mod pages;
 
 use app::App;
 use wasm_bindgen::prelude::*;
-use yew::prelude::*;
-
 
 #[wasm_bindgen]
 pub fn run() {
