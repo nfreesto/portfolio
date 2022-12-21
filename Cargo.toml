@@ -4,3 +4,7 @@ members = [
     "server",
     "app"
 ]
+
+default-members = [
+    "server"
+]
