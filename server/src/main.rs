@@ -11,7 +11,12 @@ async fn main() {
     let core = warp::path("pkg")
         .and(warp::fs::dir("app/pkg"));
 
-    let routes = core.or(index);
+    let resources = warp::path("res")
+        .and(warp::fs::dir("app/res"));
+
+    let routes = core
+        .or(resources)
+        .or(index);
 
 
     warp::serve(routes)
@@ -26,6 +31,6 @@ async fn bulid() {
         .arg("--release")
         .arg("--target")
         .arg("web");
-    dbg!(&cmd);
-    let mut child = cmd.spawn().expect("failed to spawn command");
+
+    cmd.spawn().expect("failed to spawn command");
 }
