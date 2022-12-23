@@ -1,3 +1,4 @@
+/* setup font face */
 @font-face {
     font-family: JetBrainsMono;
     src: url(./font/JetBrainsMono-Regular.woff2);
@@ -26,12 +27,561 @@
     font-style: italic;
 }
 
-
 body {
     font-family: JetBrainsMono;
+    background-color: #1e1e1e;
+    color: #fff;
+}
+
+/* declare constants */
+
+:root {
+    --default-position: 10vw;
+    --open-source-position: 20vw;
+    --projects-position: 30vw;
+    --resume-position: 40vw;
+}
+
+/* header */
+
+#moving-button {
+    position: fixed;
+    left: var(--default-position);
+    top: 100px;
+    line-height: 20px;
+}
+
+#header {
+    position: fixed;
+    width: 80vw;
+    left: var(--default-position);
+    top: 160px;
+}
+
+#header > div {
+    display: flex;
+    align-items: flex-end;
+    width: 70vw;
+    padding-left: 10vw;
+    justify-content: space-between;
+}
+
+#selection-container {
+    display: flex;
+    width: 30vw;
 }
 
 button {
+    background-color: #1e1e1e;
+    color: #fff;
     border: 0px;
-    background-color: white;
+    font-family: JetBrainsMono;
+    width: 10vw;
+    text-align: left;
+    font-size: medium;
+    padding: 0px;
+}
+
+#links-container {
+    display: flex;
+    width: 20vw;
+}
+
+#links-container > div {
+    width: 10vw;
+    text-align: right;
+}
+
+hr {
+    color: #414141;
+}
+
+/* content */
+
+.content {
+    margin-left: var(--open-source-position);
+    margin-top: 30vh;
+}
+
+/* animations */
+/* moving button animations */
+/* default to... */
+
+@keyframes moving-button-default-to-open {
+    from {
+        left: var(--default-position);
+    }
+    to {
+        left: var(--open-source-position);
+    }
+}
+
+@keyframes moving-button-default-to-projects {
+    from {
+        left: var(--default-position);
+    }
+    to {
+        left:var(--projects-position);
+    }
+}
+
+@keyframes moving-button-default-to-resume {
+    from {
+        left: var(--default-position);
+    }
+
+    to {
+        left: var(--resume-position);
+    }
+}
+
+/* open to.. */
+
+@keyframes moving-button-open-to-default {
+    from {
+        left: var(--open-source-position);
+    }
+
+    to {
+        left: var(--default-position);
+    }
+}
+
+@keyframes moving-button-open-to-projects {
+    from {
+        left: var(--open-source-position);
+    }
+
+    to {
+        left: var(--projects-position);
+    }
+}
+
+@keyframes moving-button-open-to-resume {
+    from {
+        left: var(--open-source-position);
+    }
+
+    to {
+        left: var(--resume-position);
+    }
+}
+
+/* projects to.. */
+
+@keyframes moving-button-projects-to-default {
+    from {
+        left: var(--projects-position);
+    }
+
+    to {
+        left: var(--default-position);
+    }
+}
+
+@keyframes moving-button-projects-to-open {
+    from {
+        left: var(--projects-position);
+    }
+
+    to {
+        left: var(--open-source-position);
+    }
+}
+
+@keyframes moving-button-projects-to-resume {
+    from {
+        left: var(--projects-position);
+    }
+
+    to {
+        left: var(--resume-position);
+    }
+}
+
+/* resume to.. */
+
+@keyframes moving-button-resume-to-default {
+    from {
+        left: var(--resume-position);
+    }
+
+    to {
+        left: var(--default-position);
+    }
+}
+
+@keyframes moving-button-resume-to-open {
+    from {
+        left: var(--resume-position);
+    }
+
+    to {
+        left: var(--open-source-position);
+    }
+}
+
+@keyframes moving-button-resume-to-projects {
+    from {
+        left: var(--resume-position);
+    }
+
+    to {
+        left: var(--projects-position);
+    }
+}
+
+/* hr animations */
+
+@keyframes hr-default-to-other {
+    from {
+        width: 80vw;
+        margin-left: 0vw;
+    }
+    to {
+        width: 70vw;
+        margin-left: 10vw;
+    }
+}
+
+@keyframes hr-other-to-default {
+    from {
+        width: 70vw;
+        margin-left: 10vw;
+    }
+    to {
+        width: 80vw;
+        margin-left: 0vw;
+    }
+}
+
+/* selector animations */
+
+@keyframes to-open-source-selector {
+    from {
+        color:#fff;
+    }
+    to {
+        color: #92bbe0;
+    }
+}
+
+@keyframes from-open-source-selector {
+    from {
+        color: #92bbe0;
+    }
+    to {
+        color: #fff;
+    }
+}
+
+@keyframes to-projects-selector {
+    from {
+        color: #fff;
+    }
+
+    to {
+        color: #e5d591;
+    }
+}
+
+@keyframes from-projects-selector {
+    from {
+        color: #e5d591;
+    }
+
+    to {
+        color: #fff;
+    }
+}
+
+@keyframes to-resume-selector {
+    from {
+        color: #fff;
+    }
+
+    to {
+        color: #a1d47f;
+    }
+}
+
+@keyframes from-resume-selector {
+    from {
+        color: #a1d47f;
+    }
+
+    to {
+        color: #fff;
+    }
+}
+
+/* animation assignments */
+/* default to open */
+
+#moving-button.animate-default-to-open {
+    animation-name: moving-button-default-to-open;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-default-to-open {
+    animation-name: hr-default-to-other;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#open-source-selector.animate-default-to-open {
+    animation-name: to-open-source-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* default to projects */
+
+#moving-button.animate-default-to-projects {
+    animation-name: moving-button-default-to-projects;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-default-to-projects {
+    animation-name: hr-default-to-other;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#projects-selector.animate-default-to-projects {
+    animation-name: to-projects-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* default to resume */
+
+#moving-button.animate-default-to-resume {
+    animation-name: moving-button-default-to-resume;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-default-to-resume {
+    animation-name: hr-default-to-other;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#resume-selector.animate-default-to-resume {
+    animation-name: to-resume-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* open source to default */
+
+#moving-button.animate-open-to-default {
+    animation-name: moving-button-open-to-default;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-open-to-default {
+    animation-name: hr-other-to-default;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#open-source-selector.animate-open-to-default {
+    animation-name: from-open-source-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* open source to projects */
+
+#moving-button.animate-open-to-projects {
+    animation-name: moving-button-open-to-projects;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-open-to-projects {
+    width: 70vw;
+    margin-left: 10vw;
+}
+
+#projects-selector.animate-open-to-projects {
+    animation-name: to-projects-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#open-source-selector.animate-open-to-projects {
+    animation-name: from-open-source-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* open source to resume */
+
+#moving-button.animate-open-to-resume {
+    animation-name: moving-button-open-to-resume;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-open-to-resume {
+    width: 70vw;
+    margin-left: 10vw;
+}
+
+#resume-selector.animate-open-to-resume {
+    animation-name: to-resume-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#open-source-selector.animate-open-to-resume {
+    animation-name: from-open-source-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* projects to default */
+
+#moving-button.animate-projects-to-default {
+    animation-name: moving-button-projects-to-default;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-projects-to-default {
+    animation-name: hr-other-to-default;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#projects-selector.animate-projects-to-default {
+    animation-name: from-projects-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* projects to open source */
+
+#moving-button.animate-projects-to-open {
+    animation-name: moving-button-projects-to-open;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-projects-to-open {
+    width: 70vw;
+    margin-left: 10vw;
+}
+
+#projects-selector.animate-projects-to-open {
+    animation-name: from-projects-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#open-source-selector.animate-projects-to-open {
+    animation-name: to-open-source-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* projects to resume */
+
+#moving-button.animate-projects-to-resume {
+    animation-name: moving-button-projects-to-resume;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-projects-to-resume {
+    width: 70vw;
+    margin-left: 10vw;
+}
+
+#projects-selector.animate-projects-to-resume {
+    animation-name: from-projects-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#resume-selector.animate-projects-to-resume {
+    animation-name: to-resume-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* resume to default */
+
+#moving-button.animate-resume-to-default {
+    animation-name: moving-button-resume-to-default;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-resume-to-default {
+    animation-name: hr-other-to-default;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#resume-selector.animate-resume-to-default {
+    animation-name: from-resume-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* resume to open source */
+
+#moving-button.animate-resume-to-open {
+    animation-name: moving-button-resume-to-open;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-resume-to-open {
+    width: 70vw;
+    margin-left: 10vw;
+}
+
+#resume-selector.animate-resume-to-open {
+    animation-name: from-resume-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#open-source-selector.animate-resume-to-open {
+    animation-name: to-open-source-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+/* resume to projects */
+
+#moving-button.animate-resume-to-projects {
+    animation-name: moving-button-resume-to-projects;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+hr.animate-resume-to-projects {
+    width: 70vw;
+    margin-left: 10vw;
+}
+
+#resume-selector.animate-resume-to-projects {
+    animation-name: from-resume-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+#projects-selector.animate-resume-to-projects{
+    animation-name: to-projects-selector;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
 }

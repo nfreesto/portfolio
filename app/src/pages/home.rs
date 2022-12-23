@@ -9,23 +9,15 @@ enum State {
     Resume
 }
 
-fn default_content() -> Html {
-    html!{
-        <div>
-            {"Hello"}
-        </div>
-    }
-}
-
 pub enum Msg {
-    GotoDefault,
-    GotoOpenSource,
-    GotoProjects,
-    GotoResume
+    Goto(State)
 }
 
 pub struct Home {
-    state: State
+    state: State,
+    button_class: String,
+    selector_class: String,
+    hr_class: String,
 }
 
 
@@ -35,28 +27,40 @@ impl Component for Home {
 
     fn create(_ctx: &Context<Self>) -> Self {
         Self {
-            state: State::Default
+            state: State::Default,
+            button_class: String::from(""),
+            selector_class: String::from(""),
+            hr_class: String::from(""),
         }
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::GotoDefault => {
-                self.state = State::Default;
+            Msg::Goto(state) => {
+                let animate_class: String = format!("animate-{}-to-{}",
+                    match self.state {
+                        State::Default => "default",
+                        State::OpenSource => "open",
+                        State::Projects => "projects",
+                        State::Resume => "resume",
+                    },
+                    match state {
+                        State::Default => "default",
+                        State::OpenSource => "open",
+                        State::Projects => "projects",
+                        State::Resume => "resume",
+                    }
+                );
+
+                if self.state != state {
+                    self.button_class = animate_class.clone();
+                    self.hr_class = animate_class.clone();
+                    self.selector_class = animate_class;
+                }
+
+                self.state = state;
                 true
-            },
-            Msg::GotoOpenSource => {
-                self.state = State::OpenSource;
-                true
-            },
-            Msg::GotoProjects => {
-                self.state = State::Projects;
-                true
-            },
-            Msg::GotoResume => {
-                self.state = State::Resume;
-                true
-            },
+            }
         }
 
     }
@@ -64,11 +68,7 @@ impl Component for Home {
     fn view(&self, ctx: &Context<Self>) -> Html {
         html!(
             <div>
-                <h1>{"Welcome Home"}</h1>
-                <button onclick={ctx.link().callback(|_| Msg::GotoDefault)}>{ "Default" }</button>
-                <button onclick={ctx.link().callback(|_| Msg::GotoOpenSource)}>{ "Open Source" }</button>
-                <button onclick={ctx.link().callback(|_| Msg::GotoProjects)}>{ "Projects" }</button>
-                <button onclick={ctx.link().callback(|_| Msg::GotoResume)}>{ "Resume" }</button>
+                { self.header(ctx) }
                 { self.content() }
             </div>
         )
@@ -84,4 +84,32 @@ impl Home {
             State::Resume => html!(<Resume />),
         }
     }
+
+    fn header(&self, ctx: &Context<Self>) -> Html {
+        html! {
+            <div>
+            <button id="moving-button" class={classes!(&self.button_class)} onclick={ctx.link().callback(|_| Msg::Goto(State::Default))}>
+                { "Nathan" }<br />
+                { "Freestone" }<br />
+                { "-" }<br />
+                { "Developer" }
+            </button>
+            <div id="header">
+                <div>
+                    <div id="selection-container">
+                        <button class={classes!(&self.selector_class)} id="open-source-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::OpenSource))}>{ "Open Source" }</button>
+                        <button class={classes!(&self.selector_class)} id="projects-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Projects))}>{ "Projects" }</button>
+                        <button class={classes!(&self.selector_class)} id="resume-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Resume))}>{ "Resume" }</button>
+                    </div>
+                    <div id="links-container">
+                        <div><a href="https://github.com/nfreesto">{ "Github" }</a></div>
+                        <div><a href="nfreesto@gmail.com">{ "Contact" }</a></div>
+                    </div>
+                </div>
+                <hr class={classes!(&self.hr_class)}/>
+            </div>
+            </div>
+        }
+    }
+
 }
