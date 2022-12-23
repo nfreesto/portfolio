@@ -49,24 +49,39 @@ body {
     left: var(--default-position);
     top: 100px;
     line-height: 20px;
+    z-index: 2;
 }
 
 #header {
+    background-color: #1e1e1e;
     position: fixed;
     width: 80vw;
     left: var(--default-position);
-    top: 160px;
+    top: 0px;
+    z-index: 1;
 }
 
 #header > div {
     display: flex;
     align-items: flex-end;
     width: 70vw;
-    padding-left: 10vw;
+    margin-left: 10vw;
+    padding-top: 160px;
     justify-content: space-between;
 }
 
 #selection-container {
+    position: fixed;
+    top: 160px;
+    left: var(--open-source-position);
+    background-color: #1e1e1e;
+    display: flex;
+    width: 30vw;
+    z-index: 3;
+}
+
+#selection-container-copy {
+    background-color: #1e1e1e;
     display: flex;
     width: 30vw;
 }
@@ -87,6 +102,13 @@ button {
     width: 20vw;
 }
 
+a,
+a:visited,
+a:hover,
+a:active {
+    color: inherit;
+}
+
 #links-container > div {
     width: 10vw;
     text-align: right;
@@ -94,6 +116,7 @@ button {
 
 hr {
     color: #414141;
+    margin-bottom: 0px;
 }
 
 /* content */

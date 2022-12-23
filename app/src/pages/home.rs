@@ -15,9 +15,7 @@ pub enum Msg {
 
 pub struct Home {
     state: State,
-    button_class: String,
-    selector_class: String,
-    hr_class: String,
+    animate_class: String
 }
 
 
@@ -28,9 +26,7 @@ impl Component for Home {
     fn create(_ctx: &Context<Self>) -> Self {
         Self {
             state: State::Default,
-            button_class: String::from(""),
-            selector_class: String::from(""),
-            hr_class: String::from(""),
+            animate_class: String::from(""),
         }
     }
 
@@ -53,9 +49,7 @@ impl Component for Home {
                 );
 
                 if self.state != state {
-                    self.button_class = animate_class.clone();
-                    self.hr_class = animate_class.clone();
-                    self.selector_class = animate_class;
+                    self.animate_class = animate_class;
                 }
 
                 self.state = state;
@@ -88,25 +82,31 @@ impl Home {
     fn header(&self, ctx: &Context<Self>) -> Html {
         html! {
             <div>
-            <button id="moving-button" class={classes!(&self.button_class)} onclick={ctx.link().callback(|_| Msg::Goto(State::Default))}>
+            <button id="moving-button" class={classes!(&self.animate_class)} onclick={ctx.link().callback(|_| Msg::Goto(State::Default))}>
                 { "Nathan" }<br />
                 { "Freestone" }<br />
                 { "-" }<br />
                 { "Developer" }
             </button>
+            <div id="selection-container">
+                        <button class={classes!(&self.animate_class)} id="open-source-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::OpenSource))}>{ "Open Source" }</button>
+                        <button class={classes!(&self.animate_class)} id="projects-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Projects))}>{ "Projects" }</button>
+                        <button class={classes!(&self.animate_class)} id="resume-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Resume))}>{ "Resume" }</button>
+                    </div>
             <div id="header">
                 <div>
-                    <div id="selection-container">
-                        <button class={classes!(&self.selector_class)} id="open-source-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::OpenSource))}>{ "Open Source" }</button>
-                        <button class={classes!(&self.selector_class)} id="projects-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Projects))}>{ "Projects" }</button>
-                        <button class={classes!(&self.selector_class)} id="resume-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Resume))}>{ "Resume" }</button>
+                    // This is the wrong solution, but I'm not sure how else to do a placeholder like this
+                    <div id="selection-container-copy">
+                        <button>{ "Open Source" }</button>
+                        <button>{ "Projects" }</button>
+                        <button>{ "Resume" }</button>
                     </div>
                     <div id="links-container">
-                        <div><a href="https://github.com/nfreesto">{ "Github" }</a></div>
-                        <div><a href="nfreesto@gmail.com">{ "Contact" }</a></div>
+                        <div><a target="_blank" rel="noopener noreferrer" href="https://github.com/nfreesto">{ "Github" }</a></div>
+                        <div><a target="_blank" href="./contact">{ "Contact" }</a></div>
                     </div>
                 </div>
-                <hr class={classes!(&self.hr_class)}/>
+                <hr class={classes!(&self.animate_class)}/>
             </div>
             </div>
         }

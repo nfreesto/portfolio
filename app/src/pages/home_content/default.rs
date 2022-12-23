@@ -14,6 +14,36 @@ impl Component for DefaultContent {
         html!{
             <div class="content">
                 <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
+                <p>{ "Default Content" }</p>
             </div>
         }
     }
