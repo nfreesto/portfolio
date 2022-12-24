@@ -3,9 +3,11 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 #[derive(Clone, Routable, PartialEq)]
-enum Route {
+pub enum Route {
     #[at("/")]
     Home,
+    #[at("/contact")]
+    Contact,
     #[not_found]
     #[at("/404")]
     NotFound
@@ -15,6 +17,7 @@ fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html!(<Home />),
         Route::NotFound => html!(<NotFound />),
+        Route::Contact => html!(<NotFound />),
     }
 }
 

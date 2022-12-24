@@ -31,15 +31,31 @@ body {
     font-family: JetBrainsMono;
     background-color: #1e1e1e;
     color: #fff;
+    margin: 0px;
 }
 
 /* declare constants */
 
 :root {
-    --default-position: 10vw;
-    --open-source-position: 20vw;
-    --projects-position: 30vw;
-    --resume-position: 40vw;
+    --unit-width: 130px;
+    --default-position: min(10vw, calc((100vw - 6*var(--unit-width))/2));
+    --open-source-position: calc(var(--default-position) + var(--unit-width));
+    --projects-position: calc(var(--default-position) + (var(--unit-width) * 2));
+    --resume-position: calc(var(--default-position) + (var(--unit-width) * 3));
+}
+
+/* media rules */
+
+@media only screen and (max-width: 780px) {
+    #header-container {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 780px) {
+    #skinny-header-container {
+        display: none;
+    }
 }
 
 /* header */
@@ -55,17 +71,17 @@ body {
 #header {
     background-color: #1e1e1e;
     position: fixed;
-    width: 80vw;
     left: var(--default-position);
+    right: min(10vw, calc((100vw - 6*var(--unit-width))/2));
+    min-width: calc(6*var(--unit-width));
     top: 0px;
     z-index: 1;
 }
 
-#header > div {
+#header>div {
     display: flex;
     align-items: flex-end;
-    width: 70vw;
-    margin-left: 10vw;
+    margin-left: var(--unit-width);
     padding-top: 160px;
     justify-content: space-between;
 }
@@ -76,14 +92,14 @@ body {
     left: var(--open-source-position);
     background-color: #1e1e1e;
     display: flex;
-    width: 30vw;
+    width: calc(3 * var(--unit-width));
     z-index: 3;
 }
 
 #selection-container-copy {
     background-color: #1e1e1e;
     display: flex;
-    width: 30vw;
+    width: calc(3 * var(--unit-width));
 }
 
 button {
@@ -91,7 +107,7 @@ button {
     color: #fff;
     border: 0px;
     font-family: JetBrainsMono;
-    width: 10vw;
+    width: var(--unit-width);
     text-align: left;
     font-size: medium;
     padding: 0px;
@@ -99,7 +115,7 @@ button {
 
 #links-container {
     display: flex;
-    width: 20vw;
+    width: calc(var(--unit-width) * 2);
 }
 
 a,
@@ -109,8 +125,8 @@ a:active {
     color: inherit;
 }
 
-#links-container > div {
-    width: 10vw;
+#links-container>div {
+    width: var(--unit-width);
     text-align: right;
 }
 
@@ -119,12 +135,66 @@ hr {
     margin-bottom: 0px;
 }
 
+.purple-emph {
+    color: #804c9e;
+}
+
+/* skinny header */
+
+#skinny-header {
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    height: 50px;
+}
+
+#skinny-header-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+#skinny-header-top > button {
+    width: auto;
+    margin: 15px;
+}
+
+#skinny-header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#skinny-header-content>button {
+    width: auto;
+    margin: 15px;
+}
+
+#skinny-header > hr {
+    position: absolute;
+    width: 100vw;
+    bottom: 0px;
+}
+
 /* content */
 
 .content {
     margin-left: var(--open-source-position);
-    margin-top: 30vh;
+    margin-top: 250px;
 }
+
+#default-content {
+    font-size: 20px;
+    line-height: 42px;
+    max-width: 300px;
+    margin-top: 300px;
+}
+
 
 /* animations */
 /* moving button animations */
@@ -134,6 +204,7 @@ hr {
     from {
         left: var(--default-position);
     }
+
     to {
         left: var(--open-source-position);
     }
@@ -143,8 +214,9 @@ hr {
     from {
         left: var(--default-position);
     }
+
     to {
-        left:var(--projects-position);
+        left: var(--projects-position);
     }
 }
 
@@ -258,22 +330,20 @@ hr {
 
 @keyframes hr-default-to-other {
     from {
-        width: 80vw;
         margin-left: 0vw;
     }
+
     to {
-        width: 70vw;
-        margin-left: 10vw;
+        margin-left: var(--unit-width);
     }
 }
 
 @keyframes hr-other-to-default {
     from {
-        width: 70vw;
-        margin-left: 10vw;
+        margin-left: var(--unit-width);
     }
+
     to {
-        width: 80vw;
         margin-left: 0vw;
     }
 }
@@ -282,8 +352,9 @@ hr {
 
 @keyframes to-open-source-selector {
     from {
-        color:#fff;
+        color: #fff;
     }
+
     to {
         color: #92bbe0;
     }
@@ -293,6 +364,7 @@ hr {
     from {
         color: #92bbe0;
     }
+
     to {
         color: #fff;
     }
@@ -338,273 +410,224 @@ hr {
     }
 }
 
+/* animations for skinny header */
+
+@keyframes open-header {
+    from { height: 50px; }
+    to { height: 100vh; }
+}
+
+@keyframes close-header {
+    from { height: 100vh; }
+    to { height: 50px; }
+}
+
 /* animation assignments */
+
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
 /* default to open */
+
 
 #moving-button.animate-default-to-open {
     animation-name: moving-button-default-to-open;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-default-to-open {
     animation-name: hr-default-to-other;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #open-source-selector.animate-default-to-open {
     animation-name: to-open-source-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* default to projects */
 
 #moving-button.animate-default-to-projects {
     animation-name: moving-button-default-to-projects;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-default-to-projects {
     animation-name: hr-default-to-other;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #projects-selector.animate-default-to-projects {
     animation-name: to-projects-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* default to resume */
 
 #moving-button.animate-default-to-resume {
     animation-name: moving-button-default-to-resume;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-default-to-resume {
     animation-name: hr-default-to-other;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #resume-selector.animate-default-to-resume {
     animation-name: to-resume-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* open source to default */
 
 #moving-button.animate-open-to-default {
     animation-name: moving-button-open-to-default;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-open-to-default {
     animation-name: hr-other-to-default;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #open-source-selector.animate-open-to-default {
     animation-name: from-open-source-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* open source to projects */
 
 #moving-button.animate-open-to-projects {
     animation-name: moving-button-open-to-projects;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-open-to-projects {
-    width: 70vw;
-    margin-left: 10vw;
+    margin-left: var(--unit-width);
 }
 
 #projects-selector.animate-open-to-projects {
     animation-name: to-projects-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #open-source-selector.animate-open-to-projects {
     animation-name: from-open-source-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* open source to resume */
 
 #moving-button.animate-open-to-resume {
     animation-name: moving-button-open-to-resume;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-open-to-resume {
-    width: 70vw;
-    margin-left: 10vw;
+    margin-left: var(--unit-width);
 }
 
 #resume-selector.animate-open-to-resume {
     animation-name: to-resume-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #open-source-selector.animate-open-to-resume {
     animation-name: from-open-source-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* projects to default */
 
 #moving-button.animate-projects-to-default {
     animation-name: moving-button-projects-to-default;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-projects-to-default {
     animation-name: hr-other-to-default;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #projects-selector.animate-projects-to-default {
     animation-name: from-projects-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* projects to open source */
 
 #moving-button.animate-projects-to-open {
     animation-name: moving-button-projects-to-open;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-projects-to-open {
-    width: 70vw;
-    margin-left: 10vw;
+    margin-left: var(--unit-width);
 }
 
 #projects-selector.animate-projects-to-open {
     animation-name: from-projects-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #open-source-selector.animate-projects-to-open {
     animation-name: to-open-source-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* projects to resume */
 
 #moving-button.animate-projects-to-resume {
     animation-name: moving-button-projects-to-resume;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-projects-to-resume {
-    width: 70vw;
-    margin-left: 10vw;
+    margin-left: var(--unit-width);
 }
 
 #projects-selector.animate-projects-to-resume {
     animation-name: from-projects-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #resume-selector.animate-projects-to-resume {
     animation-name: to-resume-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* resume to default */
 
 #moving-button.animate-resume-to-default {
     animation-name: moving-button-resume-to-default;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-resume-to-default {
     animation-name: hr-other-to-default;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #resume-selector.animate-resume-to-default {
     animation-name: from-resume-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* resume to open source */
 
 #moving-button.animate-resume-to-open {
     animation-name: moving-button-resume-to-open;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-resume-to-open {
-    width: 70vw;
-    margin-left: 10vw;
+    margin-left: var(--unit-width);
 }
 
 #resume-selector.animate-resume-to-open {
     animation-name: from-resume-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 #open-source-selector.animate-resume-to-open {
     animation-name: to-open-source-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 /* resume to projects */
 
 #moving-button.animate-resume-to-projects {
     animation-name: moving-button-resume-to-projects;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
 hr.animate-resume-to-projects {
-    width: 70vw;
-    margin-left: 10vw;
+    margin-left: var(--unit-width);
 }
 
 #resume-selector.animate-resume-to-projects {
     animation-name: from-resume-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
-#projects-selector.animate-resume-to-projects{
+#projects-selector.animate-resume-to-projects {
     animation-name: to-projects-selector;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
+}
+
+/* skinny header assignments */
+
+.open-header {
+    animation-name: open-header;
+}
+
+.close-header {
+    animation-name: close-header;
 }
