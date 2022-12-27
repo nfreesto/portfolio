@@ -18,7 +18,7 @@ pub enum HeaderState{
 
 pub enum Msg {
     Goto(State),
-    HeaderGoto(HeaderState)
+    HeaderGoto(HeaderState),
 }
 
 pub struct Home {
@@ -79,8 +79,8 @@ impl Component for Home {
         html!(
             <>
                 { self.header(ctx) }
-                { self.skinny_header(ctx) }
-                { self.content() }
+                // { self.skinny_header(ctx) }
+                // { self.content() }
             </>
         )
     }
@@ -97,35 +97,130 @@ impl Home {
     }
 
     fn header(&self, ctx: &Context<Self>) -> Html {
-        html! {
-            <div id="header-container">
-            <button id="moving-button" class={classes!(&self.animate_class, "animated".to_string())} onclick={ctx.link().callback(|_| Msg::Goto(State::Default))}>
-                { "Nathan" }<br />
-                { "Freestone" }<br />
-                { "-" }<br />
-                <span class="purple-emph">{ "Developer" }</span>
-            </button>
-            <div id="selection-container">
-                        <button class={classes!(&self.animate_class, "animated".to_string())} id="open-source-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::OpenSource))}>{ "Open Source" }</button>
-                        <button class={classes!(&self.animate_class, "animated".to_string())} id="projects-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Projects))}>{ "Projects" }</button>
-                        <button class={classes!(&self.animate_class, "animated".to_string())} id="resume-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Resume))}>{ "Resume" }</button>
-            </div>
-            <div id="header">
-                <div>
-                    // This is the wrong solution, but I'm not sure how else to do a placeholder like this
-                    <div id="selection-container-copy">
-                        <button>{ "Open Source" }</button>
-                        <button>{ "Projects" }</button>
-                        <button>{ "Resume" }</button>
-                    </div>
-                    <div id="links-container">
-                        <div><a target="_blank" rel="noopener noreferrer" href="https://github.com/nfreesto">{ "Github" }</a></div>
-                        <div><a href="./contact">{ "Contact" }</a></div>
-                    </div>
+
+        fn moving_button(_component: &Home, ctx: &Context<Home>) -> Html {
+            let style = stylist::css!{
+                "
+                position: fixed;
+                left: var(--default-position);
+                top: 100px;
+                "
+            };
+
+            let purple = stylist::css!("color: #804c9e;");
+
+            html! {
+                <button class={classes!(style)} onclick={ctx.link().callback(|_| Msg::Goto(State::Default))}>
+                    { "Nathan" }<br />
+                    { "Freestone" }<br />
+                    { "-" }<br />
+                    <span class={classes!(purple)}>{ "Developer" }</span>
+                </button>
+            }
+        }
+
+        fn selections(_component: &Home, ctx: &Context<Home>) -> Html {
+
+            let open_source = stylist::css!{
+                "
+                position: fixed;
+                left: var(--open-source-position);
+                top: 160px;
+                "
+            };
+
+            let projects = stylist::css!{
+                "
+                position: fixed;
+                left: var(--projects-position);
+                top: 160px;
+                "
+            };
+
+            let resume = stylist::css!{
+                "
+                position: fixed;
+                left: var(--resume-position);
+                top: 160px;
+                "
+            };
+
+
+            html! {
+                <>
+                    <button class={classes!(open_source)} onclick={ctx.link().callback(|_| Msg::Goto(State::OpenSource))}>{ "Open Source" }</button>
+                    <button class={classes!(projects)} onclick={ctx.link().callback(|_| Msg::Goto(State::Projects))}>{ "Projects" }</button>
+                    <button class={classes!(resume)} onclick={ctx.link().callback(|_| Msg::Goto(State::Resume))}>{ "Resume" }</button>
+                </>
+            }
+        }
+
+        fn links(_component: &Home, _ctx: &Context<Home>) -> Html {
+            let style = stylist::css!{
+                "
+                display: flex;
+                position:fixed;
+                top: 160px;
+                right: var(--header-right);
+                "
+            };
+
+            let other_style = stylist::css!{
+                "
+                a {
+                    width: var(--button-width);
+                    text-align: right;
+                }
+                "
+            };
+
+            html! {
+                <div class={classes!(style, other_style)}>
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/nfreesto">{ "Github" }</a>
+                    <a href="./contact">{ "Contact" }</a>
                 </div>
-                <hr class={classes!(&self.animate_class, "animated".to_string())}/>
-            </div>
-            </div>
+            }
+        }
+
+        fn hr(_component: &Home, _ctx: &Context<Home>) -> Html {
+            let style = stylist::css!{
+                "
+                position: fixed;
+                left: var(--default-position);
+                right: var(--header-right);
+                top: 180px;
+                "
+            };
+
+            html!(<hr class={classes!(style)} />)
+        }
+
+        let style = stylist::css!(
+            "@media only screen and (max-width: 780px) {
+                display: none;
+            }"
+        );
+
+        let other_style = stylist::css!{
+            "
+            hr {
+                margin-bottom: 0px;
+            }
+
+            button {
+                width: var(--button-width);
+                text-align: left;
+            }
+            "
+        };
+
+        html! {
+            <nav class={classes!(style, other_style)}>
+                { moving_button(&self, ctx) }
+                { selections(&self, ctx) }
+                { links(&self, ctx) }
+                { hr(&self, ctx) }
+            </nav>
         }
     }
 
