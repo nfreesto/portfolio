@@ -43,7 +43,7 @@ impl Component for Home {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::Goto(state) => {
-                let animate_class: String = format!("animate-{}-to-{}",
+                let animate_class: String = format!("{} {}",
                     match self.state {
                         State::Default => "default",
                         State::OpenSource => "open",
@@ -98,7 +98,38 @@ impl Home {
 
     fn header(&self, ctx: &Context<Self>) -> Html {
 
-        fn moving_button(_component: &Home, ctx: &Context<Home>) -> Html {
+        fn moving_button(component: &Home, ctx: &Context<Home>) -> Html {
+            let locations = component
+            .animate_class
+            .split(" ")
+            .map(|s|
+                match s {
+                    "default" => "--default-position",
+                    "open" => "--open-source-position",
+                    "projects" => "--projects-position",
+                    "resume" => "--resume-position",
+                    _ => ""
+                }
+            );
+
+            // let anmiation = stylist::Style::new(
+            //     format!(
+            //         "
+            //         @keyframes {{
+            //             from {{
+            //                 left: var({});
+            //             }}
+            //             to {{
+            //                 left: var({});
+            //             }}
+            //         }}
+            //         ",
+            //         locations.next().unwrap(),
+            //         locations.next().unwrap()
+            //     ).as_str()
+            // );
+
+
             let style = stylist::css!{
                 "
                 position: fixed;
