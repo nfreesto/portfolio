@@ -1,5 +1,6 @@
 use yew::prelude::*;
 use super::home_content::{DefaultContent, OpenSource, Projects, Resume};
+use std::{thread, time::Duration};
 
 #[derive(PartialEq)]
 pub enum State {
@@ -18,7 +19,7 @@ pub enum HeaderState{
 
 pub enum Msg {
     Goto(State),
-    HeaderGoto(HeaderState)
+    HeaderGoto(HeaderState),
 }
 
 pub struct Home {
@@ -70,7 +71,7 @@ impl Component for Home {
             Msg::HeaderGoto(header_state) => {
                 self.header_state = header_state;
                 true
-            },
+            }
         }
 
     }
