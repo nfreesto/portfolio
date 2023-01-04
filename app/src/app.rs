@@ -1,4 +1,4 @@
-use crate::pages::{Home, NotFound};
+use crate::pages::{Home, NotFound, DoesNotExist};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -17,7 +17,7 @@ fn switch(routes: Route) -> Html {
     match routes {
         Route::Home => html!(<Home />),
         Route::NotFound => html!(<NotFound />),
-        Route::Contact => html!(<NotFound />),
+        Route::Contact => html!(<DoesNotExist />),
     }
 }
 

@@ -1,6 +1,5 @@
 use yew::prelude::*;
 use super::home_content::{DefaultContent, OpenSource, Projects, Resume};
-use std::{thread, time::Duration};
 
 #[derive(PartialEq)]
 pub enum State {
