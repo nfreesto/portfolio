@@ -106,9 +106,9 @@ impl Home {
                 <span class="purple-emph">{ "Developer" }</span>
             </button>
             <div id="selection-container">
-                        <button class={classes!(&self.animate_class, "animated".to_string())} id="open-source-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::OpenSource))}>{ "Open Source" }</button>
                         <button class={classes!(&self.animate_class, "animated".to_string())} id="projects-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Projects))}>{ "Projects" }</button>
                         <button class={classes!(&self.animate_class, "animated".to_string())} id="resume-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Resume))}>{ "Resume" }</button>
+                        <button class={classes!(&self.animate_class, "animated".to_string())} id="open-source-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::OpenSource))}>{ "Open Source" }</button>
             </div>
             <div id="header">
                 <div>

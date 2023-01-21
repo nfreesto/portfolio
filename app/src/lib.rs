@@ -5,6 +5,6 @@ use app::App;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub fn run() {
+pub async fn run() {
     yew::Renderer::<App>::new().render();
 }

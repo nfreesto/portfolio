@@ -1,5 +1,8 @@
 use yew::prelude::*;
 
+const _REPOS: &[&str] = &[
+    "https://github.com/nfreesto/portfolio"
+];
 pub struct Projects;
 
 impl Component for Projects {

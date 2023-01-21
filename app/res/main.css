@@ -39,9 +39,34 @@ body {
 :root {
     --unit-width: 130px;
     --default-position: min(10vw, calc((100vw - 6*var(--unit-width))/2));
-    --open-source-position: calc(var(--default-position) + var(--unit-width));
-    --projects-position: calc(var(--default-position) + (var(--unit-width) * 2));
-    --resume-position: calc(var(--default-position) + (var(--unit-width) * 3));
+    --projects-position: calc(var(--default-position) + var(--unit-width));
+    --resume-position: calc(var(--default-position) + (var(--unit-width) * 2));
+    --open-source-position: calc(var(--default-position) + (var(--unit-width) * 3));
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+/* Type System */
+
+.small {
+    font-size: .75rem;
+    font-weight: 500;
+}
+
+.big {
+    font-size: 1.312rem;
+}
+
+h3 {
+    font-size: 1.312rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+h1 {
+    font-size: 2.375rem;
 }
 
 /* media rules */
@@ -64,7 +89,6 @@ body {
     position: fixed;
     left: var(--default-position);
     top: 100px;
-    line-height: 20px;
     z-index: 2;
 }
 
@@ -89,7 +113,7 @@ body {
 #selection-container {
     position: fixed;
     top: 160px;
-    left: var(--open-source-position);
+    left: var(--projects-position);
     background-color: #1e1e1e;
     display: flex;
     width: calc(3 * var(--unit-width));
@@ -106,10 +130,11 @@ button {
     background-color: #1e1e1e;
     color: #fff;
     border: 0px;
-    font-family: JetBrainsMono;
+    font-family: inherit;
     width: var(--unit-width);
     text-align: left;
-    font-size: medium;
+    font-size: inherit;
+    line-height: inherit;
     padding: 0px;
 }
 
@@ -184,14 +209,12 @@ hr {
 /* content */
 
 .content {
-    margin-left: var(--open-source-position);
+    margin-left: var(--projects-position);
     margin-top: 250px;
 }
 
 #default-content {
-    font-size: 20px;
-    line-height: 42px;
-    max-width: 300px;
+    max-width: 303px;
     margin-top: 300px;
 }
 

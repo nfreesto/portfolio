@@ -13,7 +13,7 @@ impl Component for DefaultContent {
     fn view(&self, _ctx: &Context<Self>) -> Html {
         html!{
             <div class="content">
-                <p id="default-content">{ "I'm a " }
+                <p id="default-content" class="big">{ "I'm a " }
                 <span class="purple-emph">{ "developer " }</span>
                 { "based in Northern Utah. I like to write code, and I'd love to work with you." }
                 </p>
