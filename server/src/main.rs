@@ -1,28 +1,73 @@
-use std::{fs, io::Write, thread, time::Duration, net::TcpListener};
-use serde::{Serialize, Deserialize};
-use tokio::{process::Command};
-use warp::{Filter};
+use http_body_util::Full;
+use hyper::{body::Bytes, server::conn::http1, service::service_fn, Request, Response, StatusCode, Method};
+use serde::{Deserialize, Serialize};
+use socket2::{Domain, Type, Socket};
+use std::{
+    convert::Infallible, error::Error, fs, io::Write, net::{TcpListener, SocketAddr}, thread, time::Duration,
+};
+use tokio::{net::{TcpStream}, process::Command};
 
 const PAGES: &[&str] = &["open-source", "projects"];
+static INDEX: &str = "app/index.html";
 
 #[tokio::main]
-async fn main() {
-    bulid().await;
+async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
+    // bulid().await;
 
     tokio::spawn(sync_github_data());
 
-    let index = warp::get().and(warp::fs::file("app/index.html"));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3030));
 
-    let core = warp::path("pkg").and(warp::fs::dir("app/pkg"));
+    let socket = Socket::new(Domain::IPV4, Type::STREAM, None)?;
 
-    let resources = warp::path("res").and(warp::fs::dir("app/res"));
+    socket.set_reuse_address(true)?;
+    socket.set_reuse_port(true)?;
 
-    let server_res = warp::path("server_res").and(warp::fs::dir("server/res"));
+    socket.bind(&addr.into())?;
+    socket.listen(128)?;
 
-    let routes = core.or(resources).or(server_res).or(index);
-    
-    println!("Serving on localhost:3030");
-    warp::serve(routes).run(([0, 0, 0, 0], 3030)).await;
+    let listener: TcpListener = socket.into();
+    loop {
+        println!("listening...");
+        let (stream, _) = listener.accept()?;
+
+        let tokio_stream = tokio::net::TcpStream::from_std(stream)?;
+        println!("stream established");
+
+        tokio::task::spawn(async move {
+            if let Err(err) = http1::Builder::new()
+                .serve_connection(tokio_stream, service_fn(handle_conection))
+                .await
+            {
+                println!("Error serving connection: {:?}", err);
+            }
+        });
+    }
+}
+
+async fn handle_conection(
+    request: Request<hyper::body::Incoming>,
+) -> Result<Response<Full<Bytes>>, Infallible> {
+    match (request.method(), request.uri().path()) {
+        (&Method::GET, "/") | (&Method::GET, "/index.html") => Ok(send_file(INDEX).await),
+        _ => Ok(not_found())
+    }
+}
+
+fn not_found() -> Response<Full<Bytes>> {
+    Response::builder()
+        .status(StatusCode::NOT_FOUND)
+        .body(Full::new("Not Found".into()))
+        .unwrap()
+}
+
+async fn send_file(filename: &str) -> Response<Full<Bytes>> {
+    if let Ok(contents) = tokio::fs::read(filename).await {
+        let body = contents.into();
+        return Response::new(Full::new(body));
+    }
+
+    not_found()
 }
 
 async fn bulid() {
@@ -37,10 +82,14 @@ async fn bulid() {
         .arg("--target")
         .arg("web");
 
-    cmd.spawn().expect( "failed to spawn command").wait().await.expect("failed to compile app");
+    cmd.spawn()
+        .expect("failed to spawn command")
+        .wait()
+        .await
+        .expect("failed to compile app");
 }
 
-async fn sync_github_data(){
+async fn sync_github_data() {
     loop {
         println!("getting updated data from github...");
 
@@ -76,17 +125,16 @@ async fn sync_github_data(){
                         continue;
                     }
                 };
-                
-                contents.push(
-                    RepoInfo {
-                        name: repo.full_name.unwrap(),
-                        desc: repo.description.unwrap(),
-                        lang: repo.language.unwrap().to_string()
-                    }
-                );
+
+                contents.push(RepoInfo {
+                    name: repo.full_name.unwrap(),
+                    desc: repo.description.unwrap(),
+                    lang: repo.language.unwrap().to_string(),
+                });
             }
 
-            file.write(serde_json::to_string(&contents).unwrap().as_bytes()).expect("Failed to write to file");
+            file.write(serde_json::to_string(&contents).unwrap().as_bytes())
+                .expect("Failed to write to file");
         }
 
         println!("done");
@@ -95,10 +143,9 @@ async fn sync_github_data(){
     }
 }
 
-
 #[derive(Serialize, Deserialize)]
 struct RepoInfo {
     name: String,
     desc: String,
-    lang: String
+    lang: String,
 }
