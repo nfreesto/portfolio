@@ -1,25 +1,22 @@
 use serde::{Deserialize, Serialize};
+use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
 use yew::{html, Html};
 
-pub async fn get_open_source() -> Vec<RepoInfo> {
-    let json = reqwest::get("localhost:8000/server_res/open-source.json")
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
+#[wasm_bindgen]
+extern "C" {
+    static OPENSOURCE: JsValue;
+    static PROJECTS: JsValue;
 
-    serde_json::from_str(json.as_str()).unwrap()
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
 }
 
-#[allow(unused)]
-pub async fn get_projects() -> String {
-    reqwest::get("localhost:3030/res/projects")
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap()
+pub fn get_open_source() -> Vec<RepoInfo> {
+    serde_wasm_bindgen::from_value(OPENSOURCE.clone()).unwrap()
+}
+
+pub fn get_projects() -> Vec<RepoInfo> {
+    serde_wasm_bindgen::from_value(PROJECTS.clone()).unwrap()
 }
 
 #[derive(Serialize, Deserialize)]

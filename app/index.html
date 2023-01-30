@@ -2,10 +2,8 @@
 <html>
     <head lang="en">
         <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-        <link data-trunk rel="css" href="res/main.css" />
-        <link data-trunk rel="copy-dir" href="res/font" />
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
         <link href="res/main.css" rel="stylesheet" type="text/css" />
-        <link rel="prefetch" href="server_res/open-source.json" />
     </head>
     <body>
         <script type="module">
@@ -17,6 +15,19 @@
             };
 
             start();
+        </script>
+        <script>
+            let OPENSOURCE = "";
+            $.getJSON('res/open-source.json', function (data) {
+                console.log("sucessfully retreived open source");
+                OPENSOURCE = data;
+            });
+
+            let PROJECTS = "";
+            $.getJSON('res/projects.json', function (data) {
+                console.log("sucessfully retreived projects");
+                PROJECTS = data;
+            });
         </script>
     </body>
 </html>
