@@ -11,7 +11,7 @@ impl Component for Resume {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        html!{
+        html! {
             <div class="content">
                 <p>{ "Resume Content" }</p>
             </div>

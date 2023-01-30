@@ -1,18 +1,19 @@
+use std::vec;
+
 use futures::FutureExt;
 use yew::prelude::*;
 
-use super::content_fetcher::get_open_source;
+use super::content_fetcher::{get_open_source, RepoInfo};
 
 pub struct OpenSource {
-    content: String
+    content: Vec<Html>,
 }
 
 pub enum Msg {
-    ContentLoaded(String),
+    ContentLoaded(Vec<RepoInfo>),
 }
 
 impl Component for OpenSource {
-
     type Message = Msg;
     type Properties = ();
 
@@ -21,25 +22,24 @@ impl Component for OpenSource {
 
         ctx.link().send_future(future.map(Msg::ContentLoaded));
 
-        Self {
-            content: "".to_string()
-         }
+        Self { content: vec![] }
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::ContentLoaded(html) => {
-                self.content = html;
+            Msg::ContentLoaded(info) => {
+                self.content = info.iter().map(|repo_info| repo_info.to_html()).collect();
+
                 true
-            },
+            }
         }
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        html!{
+        html! {
             <div class="content">
                 <p>{ "Open Source Content" }</p>
-                { self.content.clone() }
+                { for self.content.clone() }
             </div>
         }
     }

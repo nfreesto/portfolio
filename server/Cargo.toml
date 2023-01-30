@@ -6,7 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+ctrlc = "3.2.4"
 octocrab = "0.18.1"
+serde = "1.0.152"
+serde_json = "1.0.91"
 tokio = { version = "1.23.0", features = ["full"] }
 warp = "0.3.3"
 

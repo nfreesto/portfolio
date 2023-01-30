@@ -1,4 +1,4 @@
-use crate::pages::{Home, NotFound, DoesNotExist};
+use crate::pages::{DoesNotExist, Home, NotFound};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -10,7 +10,7 @@ pub enum Route {
     Contact,
     #[not_found]
     #[at("/404")]
-    NotFound
+    NotFound,
 }
 
 fn switch(routes: Route) -> Html {
@@ -32,7 +32,7 @@ impl Component for App {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        html!{
+        html! {
             <BrowserRouter>
                 <Switch<Route> render={switch} />
             </BrowserRouter>

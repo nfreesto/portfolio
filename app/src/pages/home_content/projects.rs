@@ -1,8 +1,6 @@
 use yew::prelude::*;
 
-const _REPOS: &[&str] = &[
-    "https://github.com/nfreesto/portfolio"
-];
+const _REPOS: &[&str] = &["https://github.com/nfreesto/portfolio"];
 pub struct Projects;
 
 impl Component for Projects {
@@ -14,7 +12,7 @@ impl Component for Projects {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        html!{
+        html! {
             <div class="content">
                 <p>{ "Projects Content" }</p>
             </div>

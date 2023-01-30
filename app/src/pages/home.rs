@@ -1,19 +1,19 @@
-use yew::prelude::*;
 use super::home_content::{DefaultContent, OpenSource, Projects, Resume};
+use yew::prelude::*;
 
 #[derive(PartialEq)]
 pub enum State {
     Default,
     OpenSource,
     Projects,
-    Resume
+    Resume,
 }
 
 #[derive(PartialEq)]
-pub enum HeaderState{
+pub enum HeaderState {
     Open,
     Closed,
-    Initial
+    Initial,
 }
 
 pub enum Msg {
@@ -26,7 +26,6 @@ pub struct Home {
     header_state: HeaderState,
     animate_class: String,
 }
-
 
 impl Component for Home {
     type Message = Msg;
@@ -43,7 +42,8 @@ impl Component for Home {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::Goto(state) => {
-                let animate_class: String = format!("animate-{}-to-{}",
+                let animate_class: String = format!(
+                    "animate-{}-to-{}",
                     match self.state {
                         State::Default => "default",
                         State::OpenSource => "open",
@@ -72,7 +72,6 @@ impl Component for Home {
                 true
             }
         }
-
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
@@ -134,7 +133,8 @@ impl Home {
             HeaderState::Open => "open-header",
             HeaderState::Closed => "close-header",
             HeaderState::Initial => "",
-        }.to_string();
+        }
+        .to_string();
 
         html! {
             <div id="skinny-header-container">
@@ -157,5 +157,4 @@ impl Home {
             </div>
         }
     }
-
 }
