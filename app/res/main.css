@@ -210,9 +210,9 @@ hr {
 /* content */
 
 .content {
-    margin-left: var(--projects-position);
+    margin-left: max(var(--projects-position), 0px);
     margin-top: 250px;
-    margin-right: min(10vw, calc((100vw - 6*var(--unit-width))/2));
+    margin-right: max(min(10vw, calc((100vw - 6*var(--unit-width))/2)), 0px);
 }
 
 #default-content {
@@ -221,12 +221,23 @@ hr {
 }
 
 .repo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     border-style: solid;
     border-width: 1px;
     border-color: #414141;
     border-radius: 5px;
-    max-width: calc(var(--unit-width) * 5);
-    height: 200px;
+    min-height: 200px;
+    flex-basis: 500px;
+    max-width: 500px;
+    flex-grow: 2;
+    background-color: #191919;
+    margin: 10px;
+}
+
+.repo > * {
+    margin: 5px;
 }
 
 .flexbox {

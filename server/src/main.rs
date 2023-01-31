@@ -1,6 +1,7 @@
 use http_body_util::Full;
 use hyper::{body::Bytes, server::conn::http1, service::service_fn, Request, Response, StatusCode, Method, header::CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use socket2::{Domain, Type, Socket};
 use std::{
     convert::Infallible, error::Error, fs, io::Write, net::{TcpListener, SocketAddr}, thread, time::Duration,
@@ -59,7 +60,7 @@ async fn handle_conection(
             } else if path.starts_with("/res") {
                 let path = path.replace("/res/", "");
                 let filename = RES.to_string() + path.as_str();
-                
+
                 return Ok(send_file(filename.as_str()).await);
             }
 
@@ -91,7 +92,7 @@ async fn send_file(filename: &str) -> Response<Full<Bytes>> {
         } else if filename.ends_with(".wasm") {
             builder = builder.header(CONTENT_TYPE, "application/wasm")
         }
-        
+
         return builder.body(contents.into()).unwrap();
     }
 
@@ -155,9 +156,9 @@ async fn sync_github_data() {
                 };
 
                 contents.push(RepoInfo {
-                    name: repo.full_name.unwrap(),
-                    desc: repo.description.unwrap(),
-                    lang: repo.language.unwrap().to_string(),
+                    name: repo.name,
+                    desc: repo.description.unwrap_or("Project contains no description".to_string()),
+                    lang: repo.language.unwrap_or(Value::from("Project does not report primary language")).to_string().trim_matches('"').to_string(),
                 });
             }
 

@@ -31,11 +31,11 @@ impl RepoInfo {
         let href = format!("https://github.com/{}", self.name);
 
         html! {
-            <a href={href}><div class="repo">
+            <a href={href} class="repo" target="_blank" rel="noopener noreferrer">
                 <h1 href="">{ &self.name }</h1>
                 <p class="small">{ &self.desc }</p>
                 <h2>{ &self.lang }</h2>
-            </div></a>
+            </a>
         }
     }
 }

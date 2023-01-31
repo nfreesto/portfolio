@@ -17,7 +17,7 @@ impl Component for Projects {
         let content: Vec<Html> = get_projects().iter().map(|x| x.to_html()).collect();
         html! {
             <div class="content">
-                <p>{ "Projects Content" }</p>
+                <p>{ "Projects for which I am a primary author:" }</p>
                 <div class="flexbox">
                     { for content }
                 </div>

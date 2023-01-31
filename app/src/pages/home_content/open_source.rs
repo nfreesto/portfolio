@@ -14,7 +14,7 @@ impl Component for OpenSource {
         let content: Vec<Html> = get_open_source().iter().map(|x| x.to_html()).collect();
         html! {
             <div class="content">
-                <p>{ "Open Source Content" }</p>
+                <p>{ "Open Source projects I've contributed to:" }</p>
                 <div class="flexbox">
                     { for content }
                 </div>
