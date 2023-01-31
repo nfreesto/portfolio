@@ -18,7 +18,9 @@ impl Component for Projects {
         html! {
             <div class="content">
                 <p>{ "Projects Content" }</p>
-                { for content }
+                <div class="flexbox">
+                    { for content }
+                </div>
             </div>
         }
     }

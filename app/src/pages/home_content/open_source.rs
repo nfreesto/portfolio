@@ -1,9 +1,5 @@
-use std::vec;
-
-use futures::FutureExt;
 use yew::prelude::*;
-
-use super::content_fetcher::{get_open_source, RepoInfo};
+use super::content_fetcher::{get_open_source};
 
 pub struct OpenSource;
 
@@ -19,12 +15,14 @@ impl Component for OpenSource {
         html! {
             <div class="content">
                 <p>{ "Open Source Content" }</p>
-                { for content }
+                <div class="flexbox">
+                    { for content }
+                </div>
             </div>
         }
     }
 
-    fn create(ctx: &Context<Self>) -> Self {
+    fn create(_ctx: &Context<Self>) -> Self {
         Self {}
     }
 }

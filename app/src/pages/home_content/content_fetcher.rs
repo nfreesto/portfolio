@@ -28,12 +28,14 @@ pub struct RepoInfo {
 
 impl RepoInfo {
     pub fn to_html(&self) -> Html {
+        let href = format!("https://github.com/{}", self.name);
+
         html! {
-            <div class="repo">
-                <p>{ &self.name }</p>
-                <p>{ &self.desc }</p>
-                <p>{ &self.lang }</p>
-            </div>
+            <a href={href}><div class="repo">
+                <h1 href="">{ &self.name }</h1>
+                <p class="small">{ &self.desc }</p>
+                <h2>{ &self.lang }</h2>
+            </div></a>
         }
     }
 }

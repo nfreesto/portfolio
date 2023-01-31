@@ -1,0 +1,47 @@
+@use "sass:math";
+
+@font-face {
+    font-family: JetBrainsMono;
+    src: url(./font/JetBrainsMono-Regular.woff2);
+    font-weight: 400;
+    font-style: normal;
+}
+
+$unit-width: 130px;
+$default-position: min(10vw, calc((100vw - 6*var(--unit-width))/2));
+$projects-position: $default-position + $unit-width;
+$resume-position: $default-position + ($unit-width * 2);
+$open-source-position: $default-position + ($unit-width * 3);
+
+.small {
+    font-size: .75rem;
+    font-weight: 500;
+}
+
+.big {
+    font-size: 1.312rem;
+}
+
+h3 {
+    font-size: 1.312rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+h1 {
+    font-size: 2.375rem;
+}
+
+@media only screen and (max-width: 780px) {
+    #header-container {
+        visibility: hidden;
+    }
+}
+
+@media only screen and (min-width: 780px) {
+    #skinny-header-container {
+        visibility: hidden;
+    }
+}
