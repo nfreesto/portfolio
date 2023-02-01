@@ -19,13 +19,11 @@
         <script>
             let OPENSOURCE = "";
             $.getJSON('res/open-source.json', function (data) {
-                console.log("sucessfully retreived open source");
                 OPENSOURCE = data;
             });
 
             let PROJECTS = "";
             $.getJSON('res/projects.json', function (data) {
-                console.log("sucessfully retreived projects");
                 PROJECTS = data;
             });
         </script>

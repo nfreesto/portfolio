@@ -1,5 +1,7 @@
 use super::home_content::{DefaultContent, OpenSource, Projects, Resume};
+use crate::app::Route;
 use yew::prelude::*;
+use yew_router::prelude::*;
 
 #[derive(PartialEq)]
 pub enum State {
@@ -119,7 +121,7 @@ impl Home {
                     </div>
                     <div id="links-container">
                         <div><a target="_blank" rel="noopener noreferrer" href="https://github.com/nfreesto">{ "Github" }</a></div>
-                        <div><a href="./contact">{ "Contact" }</a></div>
+                        <div><Link<Route> to={Route::Contact}>{ "Contact" }</Link<Route>></div>
                     </div>
                 </div>
                 <hr class={classes!(&self.animate_class, "animated".to_string())}/>

@@ -16,7 +16,11 @@ impl Component for OpenSource {
             <div class="content">
                 <p>{ "Open Source projects I've contributed to:" }</p>
                 <div class="flexbox">
-                    { for content }
+                    if !content.is_empty() {
+                        { for content }
+                    } else {
+                        <p>{ "Oops, looks like this content failed to load! Please try again later." }</p>
+                    }
                 </div>
             </div>
         }

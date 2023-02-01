@@ -19,7 +19,11 @@ impl Component for Projects {
             <div class="content">
                 <p>{ "Projects for which I am a primary author:" }</p>
                 <div class="flexbox">
-                    { for content }
+                    if !content.is_empty() {
+                        { for content }
+                    } else {
+                        <p>{ "Oops, looks like this content failed to load! Please try again later." }</p>
+                    }
                 </div>
             </div>
         }

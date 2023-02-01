@@ -1,5 +1,5 @@
-use http_body_util::Full;
-use hyper::{body::Bytes, server::conn::http1, service::service_fn, Request, Response, StatusCode, Method, header::CONTENT_TYPE};
+use http_body_util::{Full, BodyExt};
+use hyper::{body::{Bytes, Body}, server::conn::http1, service::service_fn, Request, Response, StatusCode, Method, header::{CONTENT_TYPE, LOCATION}};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use socket2::{Domain, Type, Socket};
@@ -64,16 +64,35 @@ async fn handle_conection(
                 return Ok(send_file(filename.as_str()).await);
             }
 
-            Ok(not_found())
+            Ok(not_found().await)
         }
-        _ => Ok(not_found())
+        (&Method::POST, _) => {
+            match  get_body(request).await {
+                Ok(body) => {
+                    let Ok(message): Result<IncomingMessage, _> = serde_qs::from_bytes(&body as &[u8]) else {
+                        return Ok(bad_request("Message was malformed"));
+                    };
+
+                    dbg!(message);
+
+                    Ok(recieved_msg().await)
+                },
+                Err(GetBodyError::TooBig) =>  Ok(payload_too_large()),
+                Err(GetBodyError::ConnectionFailed) => todo!(),
+            }
+        }
+        _ => Ok(not_found().await)
     }
 }
 
-fn not_found() -> Response<Full<Bytes>> {
+async fn index_body() -> Vec<u8> {
+    tokio::fs::read(INDEX).await.unwrap()
+}
+
+async fn not_found() -> Response<Full<Bytes>> {
     Response::builder()
         .status(StatusCode::NOT_FOUND)
-        .body(Full::new("Not Found".into()))
+        .body(Full::from(index_body().await))
         .unwrap()
 }
 
@@ -96,7 +115,48 @@ async fn send_file(filename: &str) -> Response<Full<Bytes>> {
         return builder.body(contents.into()).unwrap();
     }
 
-    not_found()
+    not_found().await
+}
+
+fn payload_too_large() ->Response<Full<Bytes>> {
+    Response::builder()
+        .status(StatusCode::PAYLOAD_TOO_LARGE)
+        .body(Full::new("request too large, must be <= 64kb".into()))
+        .unwrap()
+}
+
+fn bad_request(message: &'static str) -> Response<Full<Bytes>> {
+    Response::builder()
+        .status(StatusCode::BAD_REQUEST)
+        .body(Full::new(message.into()))
+        .unwrap()
+}
+
+async fn recieved_msg() -> Response<Full<Bytes>> {
+    Response::builder()
+        .status(StatusCode::CREATED)
+        .header(LOCATION, "/submitted")
+        .body(Full::new(index_body().await.into()))
+        .unwrap()
+}
+
+#[derive(Debug)]
+enum GetBodyError {
+    TooBig,
+    ConnectionFailed
+}
+
+async fn get_body(request: Request<hyper::body::Incoming>) -> Result<Vec<u8>, GetBodyError> {
+    let upper = request.body().size_hint().upper().unwrap_or(u64::MAX);
+    if upper > 1024 * 64 {
+        return Err(GetBodyError::TooBig);
+    }
+
+    if let Ok(bytes) =  request.collect().await {
+        Ok(bytes.to_bytes().iter().cloned().collect())
+    } else {
+        Err(GetBodyError::ConnectionFailed)
+    }
 }
 
 async fn bulid() {
@@ -156,6 +216,7 @@ async fn sync_github_data() {
                 };
 
                 contents.push(RepoInfo {
+                    url: repo.html_url.expect("Project didn't have a url for some reason.").to_string(),
                     name: repo.name,
                     desc: repo.description.unwrap_or("Project contains no description".to_string()),
                     lang: repo.language.unwrap_or(Value::from("Project does not report primary language")).to_string().trim_matches('"').to_string(),
@@ -174,7 +235,15 @@ async fn sync_github_data() {
 
 #[derive(Serialize, Deserialize)]
 struct RepoInfo {
+    url: String,
     name: String,
     desc: String,
     lang: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct IncomingMessage {
+    email: String,
+    subject: String,
+    message: String,
 }

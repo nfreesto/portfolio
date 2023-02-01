@@ -21,6 +21,7 @@ pub fn get_projects() -> Vec<RepoInfo> {
 
 #[derive(Serialize, Deserialize)]
 pub struct RepoInfo {
+    url: String,
     name: String,
     desc: String,
     lang: String,
@@ -28,10 +29,8 @@ pub struct RepoInfo {
 
 impl RepoInfo {
     pub fn to_html(&self) -> Html {
-        let href = format!("https://github.com/{}", self.name);
-
         html! {
-            <a href={href} class="repo" target="_blank" rel="noopener noreferrer">
+            <a href={self.url.clone()} class="repo" target="_blank" rel="noopener noreferrer">
                 <h1 href="">{ &self.name }</h1>
                 <p class="small">{ &self.desc }</p>
                 <h2>{ &self.lang }</h2>
