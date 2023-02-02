@@ -1,4 +1,4 @@
-use crate::pages::{Home, NotFound, Contact, Submitted};
+use crate::pages::{Contact, Home, NotFound, Submitted};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
