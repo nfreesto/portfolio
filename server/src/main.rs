@@ -18,7 +18,7 @@ const PAGES: &[&str] = &["open-source", "projects"];
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
-    bulid().await;
+    // bulid().await;
 
     tokio::spawn(sync_github_data());
 
