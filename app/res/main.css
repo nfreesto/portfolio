@@ -247,6 +247,14 @@ hr {
     row-gap: 50px;
 }
 
+.error {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: calc(100vh / 3);
+    margin-bottom: 0;
+    width: fit-content;
+}
+
 /* animations */
 /* moving button animations */
 /* default to... */
