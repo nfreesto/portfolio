@@ -140,7 +140,7 @@ button {
 
 #links-container {
     display: flex;
-    width: calc(var(--unit-width) * 2);
+    width: var(--unit-width);
 }
 
 a,
@@ -196,7 +196,7 @@ hr {
     align-items: center;
 }
 
-#skinny-header-content>button {
+#skinny-header-content > * {
     width: auto;
     margin: 15px;
 }

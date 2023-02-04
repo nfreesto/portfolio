@@ -1,7 +1,6 @@
 use super::home_content::{DefaultContent, OpenSource, Projects, Resume};
-use crate::app::Route;
+
 use yew::prelude::*;
-use yew_router::prelude::*;
 
 #[derive(PartialEq)]
 pub enum State {
@@ -120,8 +119,7 @@ impl Home {
                         <button>{ "Resume" }</button>
                     </div>
                     <div id="links-container">
-                        <div><a target="_blank" rel="noopener noreferrer" href="https://github.com/nfreesto">{ "Github" }</a></div>
-                        <div><Link<Route> to={Route::Contact}>{ "Contact" }</Link<Route>></div>
+                        <a target="_blank" rel="noopener noreferrer" href="https://github.com/nfreesto">{ "Github" }</a>
                     </div>
                 </div>
                 <hr class={classes!(&self.animate_class, "animated".to_string())}/>
@@ -153,6 +151,7 @@ impl Home {
                         <button class={classes!(&self.animate_class, "animated".to_string())} id="open-source-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::OpenSource))}>{ "Open Source" }</button>
                         <button class={classes!(&self.animate_class, "animated".to_string())} id="projects-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Projects))}>{ "Projects" }</button>
                         <button class={classes!(&self.animate_class, "animated".to_string())} id="resume-selector" onclick={ctx.link().callback(|_| Msg::Goto(State::Resume))}>{ "Resume" }</button>
+                        <a target="_blank" rel="noopener noreferrer" href="https://github.com/nfreesto">{ "Github" }</a>
                     </div>
                     <hr />
                 </div>

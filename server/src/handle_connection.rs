@@ -1,8 +1,7 @@
-use http_body_util::BodyExt;
 use http_body_util::Full;
 use hyper::{
-    body::{Body, Bytes},
-    header::{CONTENT_TYPE, LOCATION},
+    body::Bytes,
+    header::CONTENT_TYPE,
     Method, Request, Response, StatusCode,
 };
 use serde::{Deserialize, Serialize};
@@ -31,19 +30,6 @@ pub async fn handle_conection(
             }
 
             Ok(send_file(INDEX).await)
-        }
-        (&Method::POST, _) => match get_body(request).await {
-            Ok(body) => {
-                let Ok(message): Result<IncomingMessage, _> = serde_qs::from_bytes(&body as &[u8]) else {
-                        return Ok(bad_request("Message was malformed"));
-                    };
-
-                dbg!(message);
-
-                Ok(recieved_msg().await)
-            }
-            Err(GetBodyError::TooBig) => Ok(payload_too_large()),
-            Err(GetBodyError::ConnectionFailed) => todo!(),
         },
         _ => Ok(not_found().await),
     }
@@ -80,47 +66,6 @@ async fn send_file(filename: &str) -> Response<Full<Bytes>> {
     }
 
     not_found().await
-}
-
-fn payload_too_large() -> Response<Full<Bytes>> {
-    Response::builder()
-        .status(StatusCode::PAYLOAD_TOO_LARGE)
-        .body(Full::new("request too large, must be <= 64kb".into()))
-        .unwrap()
-}
-
-fn bad_request(message: &'static str) -> Response<Full<Bytes>> {
-    Response::builder()
-        .status(StatusCode::BAD_REQUEST)
-        .body(Full::new(message.into()))
-        .unwrap()
-}
-
-async fn recieved_msg() -> Response<Full<Bytes>> {
-    Response::builder()
-        .status(StatusCode::CREATED)
-        .header(LOCATION, "/submitted")
-        .body(Full::new(index_body().await.into()))
-        .unwrap()
-}
-
-#[derive(Debug)]
-enum GetBodyError {
-    TooBig,
-    ConnectionFailed,
-}
-
-async fn get_body(request: Request<hyper::body::Incoming>) -> Result<Vec<u8>, GetBodyError> {
-    let upper = request.body().size_hint().upper().unwrap_or(u64::MAX);
-    if upper > 1024 * 64 {
-        return Err(GetBodyError::TooBig);
-    }
-
-    if let Ok(bytes) = request.collect().await {
-        Ok(bytes.to_bytes().iter().cloned().collect())
-    } else {
-        Err(GetBodyError::ConnectionFailed)
-    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
